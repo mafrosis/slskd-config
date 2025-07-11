@@ -1,0 +1,7 @@
+web:
+  authentication:
+    api_keys:
+      informa:
+        key: eBouGe2YRQN6NtL71EsOLy39WP6ITceij0XVxDm2hXG
+        role: readwrite
+        cidr: 0.0.0.0/0,::/0

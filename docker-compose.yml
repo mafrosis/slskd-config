@@ -1,0 +1,25 @@
+---
+volumes:
+  slsk-data: {}
+
+services:
+  slskd:
+    image: slskd/slskd:${SLSKD_VERSION:-latest}
+    restart: unless-stopped
+    user: 1000:1000
+    environment:
+      - TZ=Australia/Melbourne
+      - SLSKD_SHARED_DIR=/music
+      - SLSKD_DOWNLOADS_DIR=/download
+      - SLSKD_INCOMPLETE_DIR=/app/incomplete
+      - SLSKD_CONFIG=/slskd.yml
+      - SLSKD_DEBUG=false
+    ports:
+      - 50300:50300
+    volumes:
+      - slsk-data:/app
+      - ./slskd.yml:/slskd.yml:ro
+      - /home/mafro/music:/music:ro
+      - /home/mafro/music/unsorted:/download
+    env_file:
+      - .secrets
