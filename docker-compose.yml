@@ -2,6 +2,10 @@
 volumes:
   slsk-data: {}
 
+networks:
+  caddy:
+    external: true
+
 services:
   slskd:
     image: slskd/slskd:${SLSKD_VERSION:-latest}
@@ -14,8 +18,9 @@ services:
       - SLSKD_INCOMPLETE_DIR=/app/incomplete
       - SLSKD_CONFIG=/slskd.yml
       - SLSKD_DEBUG=false
-    ports:
-      - 50300:50300
+    networks:
+      - caddy
+      - default
     volumes:
       - slsk-data:/app
       - ./slskd.yml:/slskd.yml:ro
@@ -23,3 +28,8 @@ services:
       - /home/mafro/music/unsorted:/download
     env_file:
       - .secrets
+    labels:
+      caddy: slsk.mafro.net
+      caddy.tls.ca: https://ca.mafro.net:4433/acme/acme/directory
+      caddy.tls.ca_root: /root/step_ca.crt
+      caddy.reverse_proxy: "{{upstreams 5030}}"
