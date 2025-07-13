@@ -1,6 +1,8 @@
 ---
 volumes:
-  slsk-data: {}
+  slsk-data:
+    labels:
+      net.mafro.kopia: true
 
 networks:
   caddy:
